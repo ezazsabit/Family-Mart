@@ -32,7 +32,13 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.firstgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
