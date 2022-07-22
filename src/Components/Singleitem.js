@@ -1,10 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useParams } from 'react-router-dom';
+import auth from '../firebase.init';
 
 const Singleitem = () => {
     const [users, setUsers] = useState([]);
     const { id } = useParams();
+    // const { currentUser } = auth;
+    // console.log(currentUser);
+    // const [loading] = useAuthState(auth);
+    // setInterval(console.log(auth?.currentUser?.email), 5000);
+
+
+    console.log(auth?.currentUser);
 
 
     useEffect(() => {
@@ -18,6 +27,14 @@ const Singleitem = () => {
 
         });
     }
+    // if (loading) {
+    //     return (
+    //         <div>
+    //             <p>Initialising User...</p>
+    //         </div>
+    //     );
+    // }
+    console.log(auth?.currentUser?.email)
     const handleconfirm = () => {
         // console.log(e.target)
         // var object = t;
@@ -26,9 +43,13 @@ const Singleitem = () => {
         const imglink = users.imglink;
         const pricep = document.getElementById("price").innerHTML;
         const quantityp = document.getElementById("quantity").value;
-        const inputs = { namep, imglink, pricep, quantityp };
+
+        //--------------------for geting email of logged in user---------------------------------
+        const email = auth?.currentUser?.email
+        const inputs = { namep, imglink, pricep, quantityp, email };
+
         console.log(inputs);
-        axios.post('http://localhost/Family-Mart/myitemdb.php', inputs).then(function (response) {
+        axios.post(`http://localhost/Family-Mart/myitemdb.php/${email}`, inputs).then(function (response) {
             console.log(response.data);
         });
         alert('Succesfully added!!');

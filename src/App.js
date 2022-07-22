@@ -38,7 +38,7 @@ function App() {
         <Route path="home" element={<Home />} />
         <Route path="signUp" element={<Register />} />
         <Route path="login" element={<Sign />} />
-        <Route path="/myitems" element={<Myitems />} />
+        <Route path="/myitems/:email" element={<Myitems />} />
         <Route path="singleitem/:id" element={<Singleitem />} />
         <Route path="manageitems" element={<Requireauth><UserList /></Requireauth>} />
         <Route path="additems" element={<Requireauth><Additems /></Requireauth>} />

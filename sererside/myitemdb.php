@@ -12,7 +12,7 @@ include("DbConnect.php");
         case 'POST':
             $user = json_decode(file_get_contents('php://input'));
             
-            $sql = "INSERT INTO myitems(product_name,price, imglink, quantity) values(:name, :price, :img, :quantity)";
+            $sql = "INSERT INTO myitems(product_name,email,price, imglink, quantity) values(:name,:email, :price, :img, :quantity)";
             $stmt = $db->prepare($sql);
             // $date = date('Y-m-d');
 
@@ -24,6 +24,7 @@ include("DbConnect.php");
             $stmt->bindParam(':price', $user->pricep);
             $stmt->bindParam(':quantity', $user->quantityp);
             $stmt->bindParam(':img', $user->imglink);
+            $stmt->bindParam(':email', $user->email);
             // $stmt->bindParam(':created_at', $date);
             // $stmt->bindParam(':updated_at', $date);
             if($stmt->execute()) {
@@ -39,30 +40,45 @@ include("DbConnect.php");
             ///get items-----
             case 'GET':
                 //------------------this is for normal------------without condition----------
-                $sql = "SELECT * FROM myitems";
-                $stmt = $db->prepare($sql);
-                $stmt->execute();
-                $items = $stmt->fetchAll(PDO::FETCH_ASSOC);        
-                echo json_encode($items);
-                break;
-                //-----------------------------------------for confition----------------------------------
-
-                // $sql = "SELECT * FROM additems";
-                // $path = explode('/', $_SERVER['REQUEST_URI']);
-                // if(isset($path[3]) && is_numeric($path[3])) {
-                //     $sql .= " WHERE id = :id";
-                //     $stmt = $db->prepare($sql);
-                //     $stmt->bindParam(':id', $path[3]);
-                //     $stmt->execute();
-                //     $items = $stmt->fetch(PDO::FETCH_ASSOC);
-                // } else {
-                //     $stmt = $db->prepare($sql);
-                //     $stmt->execute();
-                //     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                // }
-            
+                // $sql = "SELECT * FROM myitems";
+                // $stmt = $db->prepare($sql);
+                // $stmt->execute();
+                // $items = $stmt->fetchAll(PDO::FETCH_ASSOC);        
                 // echo json_encode($items);
                 // break;
+
+                //-----------------------------------------for confition----------------------------------
+
+                //-----------------mun's code--------------------
+                // $_conn = new mysqli("localhost","root","","react_crud");
+                // $sql = "SELECT * FROM myitems WHERE email = 'sabit8138@gmail.com'";
+                // $res = mysqli_query($_conn, $sql);
+                // $items = mysqli_fetch_all($res,MYSQLI_ASSOC);
+                // echo json_encode($items);
+                //--------------------------------------------------
+                
+
+                //---------------------my code---------------------------------
+                //fetch for only first row------- and-------- fetchAll for all row
+                //ASSOC for associative array
+                $sql = "SELECT * FROM myitems ";
+                $path = explode('/', $_SERVER['REQUEST_URI']);
+                if(isset($path[3])) {
+                    $sql .= " WHERE email = :email";
+                    $stmt = $db->prepare($sql);
+                  
+                    $stmt->bindParam(':email', $path[3]);
+                    $stmt->execute();
+                    // echo $stmt;
+                    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                } else {
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute();
+                    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+            
+                echo json_encode($items);
+                break;
     
         
           

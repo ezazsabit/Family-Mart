@@ -24,7 +24,7 @@ const SecondNavbar = () => {
                                 <p className='logOut my-auto text-danger signout' onClick={logout}>Log-Out</p>
                                 <Link to='/manageitems' className='text-decoration-none text-light d-flex align-items-center px-2 mx-auto'>Manage-Items</Link>
                                 <Link to='/additems' className='text-decoration-none text-light d-flex align-items-center px-2 mx-auto'>Add-Items</Link>
-                                <Link to='/myitems' className='text-decoration-none text-light d-flex align-items-center px-2 mx-auto'>My-Items</Link>
+                                <Link to={'/myitems/' + auth.currentUser.email} className='text-decoration-none text-light d-flex align-items-center px-2 mx-auto'>My-Items</Link>
                             </div> : <Link to='/login' className='text-decoration-none text-light d-flex align-items-center px-2 mx-auto'>Sign-In</Link>}</Nav.Link>
                         <Nav.Link href="/signUp">Sign-up</Nav.Link>
                         <Nav.Link href="/allitems">All products</Nav.Link>

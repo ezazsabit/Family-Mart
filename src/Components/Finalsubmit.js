@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import img1 from '../360_F_291522205_XkrmS421FjSGTMRdTrqFZPxDY19VxpmL.jpg'
+import img1 from '../360_F_291522205_XkrmS421FjSGTMRdTrqFZPxDY19VxpmL.jpg';
+import auth from '../firebase.init';
 
 const Finalsubmit = () => {
     const [users, setUsers] = useState([]);
@@ -11,7 +12,7 @@ const Finalsubmit = () => {
         getUsers();
     }, []);
     function getUsers() {
-        axios.get('http://localhost/Family-Mart/myitemdb.php').then(function (response) {
+        axios.get(`http://localhost/Family-Mart/myitemdb.php/${auth?.currentUser?.email}`).then(function (response) {
             setUsers(response.data)
             console.log(response.data)
             // console.log(response.data[0]);
@@ -22,9 +23,10 @@ const Finalsubmit = () => {
 
     }
     let a = 0;
-    users.slice(1).map(user => {
+    users.map(user => {
 
-        a = a + parseInt(user.price) * user.quantity;
+        a = a + parseInt(user.quantity) * user.price;
+        console.log(a);
 
     })
     return (

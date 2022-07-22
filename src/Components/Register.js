@@ -41,6 +41,7 @@ const Register = () => {
     }
     const handleCreateUser = event => {
         event.preventDefault();
+        alert('Registered!!')
 
         console.log('ashche')
         console.log(email)
@@ -50,7 +51,11 @@ const Register = () => {
         //     return;
         // }
         createUserWithEmailAndPassword(email, password);
+        sessionStorage.setItem('Email', email);
+        sessionStorage.setItem('User', name);
+        sessionStorage.setItem('Password', password);
 
+        event.target.reset();
 
     }
 

@@ -2,17 +2,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import auth from '../firebase.init'
 
 const Myitems = () => {
     const [users, setUsers] = useState([]);
-    //
-
 
     useEffect(() => {
         getUsers();
     }, []);
     function getUsers() {
-        axios.get('http://localhost/Family-Mart/myitemdb.php').then(function (response) {
+        axios.get(`http://localhost/Family-Mart/myitemdb.php/${auth?.currentUser?.email}`).then(function (response) {
             setUsers(response.data)
             console.log(response.data)
             // console.log(response.data[0]);
@@ -25,15 +24,16 @@ const Myitems = () => {
     return (
         <div>
 
-            <h1>Total Items {users.length - 1} </h1>
-            <table className='w-50 mx-auto'>
+            <h1>Total Items {users.length} </h1>
+            <table className='w-70 mx-auto'>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total Price</th>
+                        <th className='p-3'>Name</th>
+                        <th className='p-3'>Image</th>
+                        <th className='p-3'>Quantity</th>
+                        <th className='p-3'>Price</th>
+                        <th className='p-3'>Total Price</th>
+                        {/* <th className='p-3'>Action</th> */}
 
                     </tr>
                 </thead>
@@ -41,15 +41,15 @@ const Myitems = () => {
                     {users.map((user, key) =>
 
                         <tr key={key}>
-                            <td>{user.product_name}</td>
-                            <td> <img src={user.imglink} alt="" /></td>
-                            <td>{user.quantity}</td>
-                            <td>{user.price}</td>
-                            <td>{parseInt(user.price) * user.quantity}</td>
-                            {/* <td>{user.mobile}</td> */}
-                            <td>
+                            <td className='p-3'>{user.product_name}</td>
+                            <td className='p-3'> <img src={user.imglink} alt="" /></td>
+                            <td className='p-3'>{user.quantity}</td>
+                            <td className='p-3'>{user.price}</td>
+                            <td className='p-3'>{parseInt(user.quantity) * user.price}</td>
 
-                                {/* <Button variant="dark" onClick={() => deleteUser(user.id)}>Delete</Button> */}
+                            <td className='p-3'>
+                                {/* onClick={() => deleteUser(user.id)} */}
+                                {/* <Button className='my-5' variant="dark" >Remove from Cart</Button> */}
                             </td>
                         </tr>
                     )}
