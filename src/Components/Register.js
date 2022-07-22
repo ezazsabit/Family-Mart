@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
+import Modalp from '../Components/Modalp'
 
 
 const Register = () => {
@@ -33,30 +34,51 @@ const Register = () => {
         user
 
 
-    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+    ] = useCreateUserWithEmailAndPassword(auth);
 
     const navigate = useNavigate();
-    if (user) {
-        navigate('/home')
-    }
+
+
     const handleCreateUser = event => {
         event.preventDefault();
-        alert('Registered!!')
-
-        console.log('ashche')
-        console.log(email)
-        console.log(password)
+        console.log(email);
         // if(password!== confirmpassword){
         //     setError('Your two password are not same')
         //     return;
         // }
+        // eslint-disable-next-line no-lone-blocks
+        {
+
+        }
         createUserWithEmailAndPassword(email, password);
+        alert('Registered!!');
+
+
+
+        //--------------------session add-------------------------------------------
         sessionStorage.setItem('Email', email);
         sessionStorage.setItem('User', name);
         sessionStorage.setItem('Password', password);
 
+
+
+
+
+
         event.target.reset();
 
+        // eslint-disable-next-line no-restricted-globals
+        const a = confirm('Do you accept coookies?');
+        if (a == true) {
+            //--------------------cookie add--------------------------------------------(for 30 day)
+            const date = new Date();
+            date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
+            document.cookie = `Email=${email}; User=${name}; expires=${date.toUTCString()}; path=/`;
+        }
+
+    }
+    if (user) {
+        navigate('/home')
     }
 
 
@@ -64,16 +86,16 @@ const Register = () => {
         <div className='App'>
             <h2>  PLease Register!!</h2>
             <div className="container w-50 mx-auto mb-5">
-
+                {/* <Modalp Email={email} User={name}></Modalp> */}
                 <form onSubmit={handleCreateUser} action="">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Your Name</Form.Label><br></br>
                         {/* <input onBlur={handleNameBlur} className='m-2 py-2 border border-secondary'  type="text" placeholder="Enter your full name"/> */}
-                        <Form.Control onBlur={handleNameBlur} required type="text" placeholder="Enter your full name" />
+                        <Form.Control defaultValue={sessionStorage.getItem('User')} onBlur={handleNameBlur} required type="text" placeholder="Enter your full name" />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control required onBlur={handleEmailBlur} type="email" placeholder="Enter email" />
+                        <Form.Control defaultValue={sessionStorage.getItem('Email')} required onBlur={handleEmailBlur} type="email" placeholder="Enter email" />
                         <Form.Text className="text-muted">
                             We'll never share your email with anyone else.
                         </Form.Text>
@@ -81,7 +103,7 @@ const Register = () => {
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control required onBlur={handlePassBlur} type="password" placeholder="Password" />
+                        <Form.Control defaultValue={sessionStorage.getItem('Password')} required onBlur={handlePassBlur} type="password" placeholder="Password" />
                     </Form.Group>
                     {/* <Form.Group className="mb-3" controlId="formBasicPassword">
     <Form.Label>Confirm Password</Form.Label>

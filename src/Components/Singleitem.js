@@ -34,6 +34,25 @@ const Singleitem = () => {
     //         </div>
     //     );
     // }
+
+
+    const day = 24 * 60 * 60 * 1000;
+    // eslint-disable-next-line no-undef
+    cookieStore.set({
+        name: "cookie1",
+        value: "cookie1-value",
+        expires: Date.now() + day,
+        domain: "localhost:3000"
+    })
+        .then(
+            function () {
+                console.log("It worked!");
+            },
+            function (reason) {
+                console.error("It failed: ", reason);
+            }
+        );
+
     console.log(auth?.currentUser?.email)
     const handleconfirm = () => {
         // console.log(e.target)
